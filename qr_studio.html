@@ -1,0 +1,146 @@
+    <div id="view-qr-studio" class="app-view h-screen overflow-hidden pb-16 md:pb-0">
+        <div class="studio-layout">
+            <!-- Left Controls -->
+            <div class="glass-card controls-panel p-6 flex flex-col gap-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-1">QR Studio</h2>
+                    <p class="text-sm text-slate-500">Design your dynamic QR</p>
+                </div>
+                
+                <div class="input-group">
+                    <label>Templates Gallery <span class="text-xs text-blue-500 float-right font-bold"><i class="fas fa-crown"></i> Pro Unlocks All</span></label>
+                    <div class="flex flex-wrap gap-3 pb-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar" id="qr-templates-gallery">
+                        <div class="w-28 h-28 bg-slate-200 animate-pulse rounded-xl"></div>
+                        <div class="w-28 h-28 bg-slate-200 animate-pulse rounded-xl"></div>
+                        <div class="w-28 h-28 bg-slate-200 animate-pulse rounded-xl"></div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>QR Data (URL or Text)</label>
+                    <input type="text" id="qr-data" placeholder="https://example.com" value="https://example.com" oninput="generateQR()">
+                </div>
+                
+                <div class="input-group">
+                    <label>Foreground Color</label>
+                    <div class="flex gap-2">
+                        <input type="color" id="qr-color-fg" value="#000000" class="h-12 cursor-pointer p-1" oninput="generateQR()">
+                        <input type="text" value="#000000" class="flex-1" readonly>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Background Color <span class="text-[10px] text-blue-600 font-normal italic">(Free: 2x, Premium: Unlimited)</span></label>
+                    <div class="flex gap-2">
+                        <input type="color" id="qr-color-bg" value="#ffffff" class="h-12 cursor-pointer p-1" oninput="generateQR()">
+                        <input type="text" value="#ffffff" class="flex-1" readonly>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Background Image (Optional) <span class="text-[10px] text-blue-600 font-normal italic">(Free: 2x, Premium: Unlimited)</span></label>
+                    <input type="file" id="qr-bg-image" accept="image/*" class="w-full p-2 border border-slate-300 rounded-md" onchange="generateQR()">
+                </div>
+                
+                <div class="input-group">
+                    <label>Logo File (Optional)</label>
+                    <input type="file" id="qr-logo-upload" accept="image/*" class="w-full p-2 border border-slate-300 rounded-md" onchange="handleLogoUpload(event)">
+                </div>
+                <div class="input-group">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" id="qr-logo-aspect-ratio" checked onchange="generateQR()"> Maintain Aspect Ratio
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label>Pattern Style</label>
+                    <select id="qr-dots-type" onchange="generateQR()">
+                        <option value="square" selected>Square</option>
+                        <option value="dots">Dots</option>
+                        <option value="rounded">Rounded</option>
+                        <option value="extra-rounded">Extra Rounded</option>
+                        <option value="classy">Classy</option>
+                        <option value="classy-rounded">Classy Rounded</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Eye Frame Style</label>
+                    <select id="qr-corners-square-type" onchange="generateQR()">
+                        <option value="square" selected>Square</option>
+                        <option value="dot">Dot</option>
+                        <option value="extra-rounded">Extra Rounded</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Eye Pattern Style</label>
+                    <select id="qr-corners-dot-type" onchange="generateQR()">
+                        <option value="square" selected>Square</option>
+                        <option value="dot">Dot</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>Logo Upload</label>
+                    <input type="file" id="qr-logo" accept="image/png, image/jpeg" onchange="handleLogoUpload(event)">
+                </div>
+
+                <div class="input-group">
+                    <label>Margin</label>
+                    <input type="number" id="qr-margin" value="10" min="0" max="50" onchange="generateQR()">
+                </div>
+                
+                <div class="input-group">
+                    <label>Error Correction Level</label>
+                    <select id="qr-error" onchange="generateQR()">
+                        <option value="L">Low (7%)</option>
+                        <option value="M">Medium (15%)</option>
+                        <option value="Q">Quartile (25%)</option>
+                        <option value="H" selected>High (30%)</option>
+                    </select>
+                </div>
+                
+                <div class="mt-auto pt-6 border-t border-slate-200 space-y-4">
+                    <button class="btn btn-primary w-full justify-center" onclick="saveQR()">
+                        <i class="fas fa-save"></i> Save QR Code
+                    </button>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Download Options</label>
+                        
+                        <!-- Recommended SVG Download -->
+                        <button class="w-full flex items-center justify-between px-4 py-3 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl text-emerald-800 text-sm font-bold transition-all shadow-sm hover:shadow active:scale-[0.98]" onclick="downloadQR('svg')">
+                            <span class="flex items-center gap-2">
+                                <i class="fas fa-file-code text-lg"></i>
+                                <span>Export to SVG</span>
+                            </span>
+                            <span class="px-2.5 py-0.5 text-[10px] uppercase font-extrabold bg-emerald-200 text-emerald-950 rounded-full">Recommended</span>
+                        </button>
+                        
+                        <!-- PNG & JPEG Grid -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="flex items-center justify-center gap-2 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-700 text-xs font-bold transition-all active:scale-[0.98]" onclick="downloadQR('png')">
+                                <i class="fas fa-image text-slate-500"></i>
+                                <span>Export to PNG</span>
+                            </button>
+                            <button class="flex items-center justify-center gap-2 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-700 text-xs font-bold transition-all active:scale-[0.98]" onclick="downloadQR('jpeg')">
+                                <i class="fas fa-file-image text-slate-500"></i>
+                                <span>Export to JPEG</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Preview -->
+            <div class="preview-panel relative">
+                <div class="glass-card p-8 bg-white shadow-2xl flex flex-col items-center">
+                    <div id="qrcode-canvas" class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"></div>
+                    <p class="mt-6 text-sm text-slate-500 font-medium tracking-wide" id="qr-preview-text">Live Preview</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Placeholder Views -->
