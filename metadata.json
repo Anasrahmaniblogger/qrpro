@@ -1,6 +1,0 @@
-{
-  "name": "QR and Logo Builder Pro",
-  "description": "Create customized QR codes, dynamic landing pages, AI generated logos, and manage premium templates and subscriptions.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
